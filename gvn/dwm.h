@@ -668,18 +668,17 @@ void attachstack(Client *c) {
      XAllowEvents(dpy, ReplayPointer, CurrentTime);
      click = ClkClientWin;
    }
-
-+  /* Aquí empieza el handler de ejecución de botones */
-+execute_handler:
-+  for (i = 0; i < LENGTH(buttons); i++) {
-+    if (click == buttons[i].click
-+        && buttons[i].func
-+        && buttons[i].button == ev->button
-+        && buttons[i].mask == CLEANMASK(ev->state)) {
-+      buttons[i].func(&(buttons[i].arg));
-+    }
-+  }
- }
+   
+execute_handler:
+  for (i = 0; i < LENGTH(buttons); i++) {
+    if (click == buttons[i].click
+        && buttons[i].func
+        && buttons[i].button == ev->button
+        && buttons[i].mask == CLEANMASK(ev->state)) {
+      buttons[i].func(&(buttons[i].arg));
+    }
+  }
+}
 
 
 void checkotherwm(void) {
