@@ -235,6 +235,13 @@ static const Key keys[] = {
     // cerrar ventana
     { MODKEY,                           XK_q,       killclient,     {0} },
 
+
+    TAGKEYS(                        XK_1,                      0)
+    TAGKEYS(                        XK_2,                      1)
+    TAGKEYS(                        XK_3,                      2)
+    TAGKEYS(                        XK_4,                      3)
+    TAGKEYS(                        XK_5,                      4)
+
 };
 
 /* Definiciones de botones */
