@@ -181,69 +181,66 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,                 XK_Return,  zoom,           {0} },
     { MODKEY,                           XK_Tab,     view,           {0} },
 
-    // espacios generales
-    { MODKEY|ControlMask,               XK_i,       incrgaps,       {.i = +1 } },
-    { MODKEY|ControlMask,               XK_d,       incrgaps,       {.i = -1 } },
+    // Control de áreas y ventanas con MODKEY + Shift + flechas
+    { MODKEY|ShiftMask, XK_Left,  setmfact,   {.f = -0.05} },  // MODKEY+Shift+← : Reducir área maestra (mover división izquierda)
+    { MODKEY|ShiftMask, XK_Right, setmfact,   {.f = +0.05} },  // MODKEY+Shift+→ : Aumentar área maestra (mover división derecha)
+    { MODKEY|ShiftMask, XK_Down,  movestack,  {.i = +1} },     // MODKEY+Shift+↓ : Mover ventana abajo en el stack
+    { MODKEY|ShiftMask, XK_Up,    movestack,  {.i = -1} },     // MODKEY+Shift+↑ : Mover ventana arriba en el stack
 
-    // espacios interiores
-    { MODKEY|ShiftMask,                 XK_i,       incrigaps,      {.i = +1 } },
-    { MODKEY|ControlMask|ShiftMask,     XK_i,       incrigaps,      {.i = -1 } },
+    /* ===== CONTROL DE ESPACIOS (GAPS) ===== */
+    // Ajustes generales (en la sección 'appearance' del archivo):
+    static const unsigned int gappih = 10;  // Espacio horizontal ENTRE ventanas
+    static const unsigned int gappiv = 10;  // Espacio vertical ENTRE ventanas
+    static const unsigned int gappoh = 15;  // Margen exterior horizontal (bordes laterales)
+    static const unsigned int gappov = 10;  // Margen exterior vertical (bordes superior/inferior)
 
-    // espacios exteriores
-    { MODKEY|ControlMask,               XK_o,       incrogaps,      {.i = +1 } },
-    { MODKEY|ControlMask|ShiftMask,     XK_o,       incrogaps,      {.i = -1 } },
+    // Atajos de teclado (en la sección 'keys[]'):
+    /* ----- Control BÁSICO ----- */
+    { MODKEY|ControlMask, XK_equal,  incrgaps,  {.i = +1 } },  // [Super+Ctrl++] Aumentar TODOS los gaps
+    { MODKEY|ControlMask, XK_minus,  incrgaps,  {.i = -1 } },  // [Super+Ctrl+-] Reducir TODOS los gaps
 
-    // espacios interiores+exteriores horizontal/vertical
-    { MODKEY|ControlMask,               XK_6,       incrihgaps,     {.i = +1 } },
-    { MODKEY|ControlMask|ShiftMask,     XK_6,       incrihgaps,     {.i = -1 } },
-    { MODKEY|ControlMask,               XK_7,       incrivgaps,     {.i = +1 } },
-    { MODKEY|ControlMask|ShiftMask,     XK_7,       incrivgaps,     {.i = -1 } },
-    { MODKEY|ControlMask,               XK_8,       incrohgaps,     {.i = +1 } },
-    { MODKEY|ControlMask|ShiftMask,     XK_8,       incrohgaps,     {.i = -1 } },
-    { MODKEY|ControlMask,               XK_9,       incrovgaps,     {.i = +1 } },
-    { MODKEY|ControlMask|ShiftMask,     XK_9,       incrovgaps,     {.i = -1 } },
+    /* ----- Control AVANZADO ----- */
+    // Gaps INTERIORES (entre ventanas):
+    { MODKEY|ShiftMask, XK_i,       incrigaps, {.i = +1 } },   // [Super+Shift+i] +1px interior
+    { MODKEY|ShiftMask, XK_u,       incrigaps, {.i = -1 } },   // [Super+Shift+u] -1px interior
 
-    { MODKEY|ControlMask|ShiftMask,     XK_d,       defaultgaps,    {0} },
+    // Gaps EXTERIORES (bordes pantalla):
+    { MODKEY|ControlMask, XK_o,     incrogaps, {.i = +1 } },   // [Super+Ctrl+o] +1px exterior
+    { MODKEY|ControlMask, XK_p,     incrogaps, {.i = -1 } },   // [Super+Ctrl+p] -1px exterior
 
-    // diseños
-    { MODKEY,                           XK_t,       setlayout,      {.v = &layouts[0]} },
-    { MODKEY|ShiftMask,                 XK_f,       setlayout,      {.v = &layouts[1]} },
-    { MODKEY,                           XK_m,       setlayout,      {.v = &layouts[2]} },
-    { MODKEY|ControlMask,               XK_g,       setlayout,      {.v = &layouts[10]} },
-    { MODKEY|ControlMask|ShiftMask,     XK_t,       setlayout,      {.v = &layouts[13]} },
-    { MODKEY,                           XK_space,   setlayout,      {0} },
-    { MODKEY|ControlMask,               XK_comma,   cyclelayout,    {.i = -1 } },
-    { MODKEY|ControlMask,               XK_period,  cyclelayout,    {.i = +1 } },
-    { MODKEY,                           XK_0,       view,           {.ui = ~0 } },
-    { MODKEY|ShiftMask,                 XK_0,       tag,            {.ui = ~0 } },
-    { MODKEY,                           XK_comma,   focusmon,       {.i = -1 } },
-    { MODKEY,                           XK_period,  focusmon,       {.i = +1 } },
-    { MODKEY|ShiftMask,                 XK_comma,   tagmon,         {.i = -1 } },
-    { MODKEY|ShiftMask,                 XK_period,  tagmon,         {.i = +1 } },
+    /* ----- RESET ----- */
+    { MODKEY|ControlMask|ShiftMask, XK_0, defaultgaps, {0} },  // [Super+Ctrl+Shift+0] Resetear gaps
+
+    /* ===== GESTIÓN DE DISEÑOS (LAYOUTS) Y MONITORES ===== */
+
+    // Cambiar a diseños específicos
+    { MODKEY, XK_t, setlayout, {.v = &layouts[0]} },          // [Super+t] Layout tile (mosaico estándar)
+    { MODKEY|ShiftMask, XK_f, setlayout, {.v = &layouts[1]} }, // [Super+Shift+f] Layout monocle (ventana completa)
+    { MODKEY, XK_m, setlayout, {.v = &layouts[2]} },          // [Super+m] Layout spiral (espiral)
+    { MODKEY|ControlMask, XK_g, setlayout, {.v = &layouts[10]} }, // [Super+Ctrl+g] Layout gaplessgrid (rejilla sin espacios)
+    { MODKEY|ControlMask|ShiftMask, XK_t, setlayout, {.v = &layouts[13]} }, // [Super+Ctrl+Shift+t] Layout floating (flotante)
+
+    // Ciclar entre diseños
+    { MODKEY, XK_space, setlayout, {0} },                    // [Super+Espacio] Cambiar al siguiente diseño
+    { MODKEY|ControlMask, XK_comma, cyclelayout, {.i = -1} }, // [Super+Ctrl+,] Ciclar al diseño anterior
+    { MODKEY|ControlMask, XK_period, cyclelayout, {.i = +1} },// [Super+Ctrl+.] Ciclar al siguiente diseño
+
+    // Gestión de tags (espacios de trabajo)
+    { MODKEY, XK_0, view, {.ui = ~0} },                      // [Super+0] Ver todas las ventanas (mostrar todos los tags)
+    { MODKEY|ShiftMask, XK_0, tag, {.ui = ~0} },             // [Super+Shift+0] Mover ventana a todos los tags
+
+    // Manejo de múltiples monitores
+    { MODKEY, XK_comma, focusmon, {.i = -1} },               // [Super+,] Enfocar monitor izquierdo
+    { MODKEY, XK_period, focusmon, {.i = +1} },              // [Super+.] Enfocar monitor derecho
+    { MODKEY|ShiftMask, XK_comma, tagmon, {.i = -1} },       // [Super+Shift+,] Mover ventana a monitor izquierdo
+    { MODKEY|ShiftMask, XK_period, tagmon, {.i = +1} },      // [Super+Shift+.] Mover ventana a monitor derecho
 
     // terminar dwm
-    { MODKEY|ControlMask,               XK_q,       spawn, SHCMD("killall bar.sh chadwm") },
+    { MODKEY|ControlMask,               XK_q,       spawn, SHCMD("killall bar.sh gvn") },
 
     // cerrar ventana
     { MODKEY,                           XK_q,       killclient,     {0} },
 
-    // reiniciar
-    { MODKEY|ShiftMask,                 XK_r,       restart,        {0} },
-
-    // ocultar y restaurar ventanas
-    { MODKEY,                           XK_e,       hidewin,        {0} },
-    { MODKEY|ShiftMask,                 XK_e,       restorewin,     {0} },
-
-    // Teclas para etiquetas (1-9)
-    TAGKEYS(                            XK_1,                       0)
-    TAGKEYS(                            XK_2,                       1)
-    TAGKEYS(                            XK_3,                       2)
-    TAGKEYS(                            XK_4,                       3)
-    TAGKEYS(                            XK_5,                       4)
-    TAGKEYS(                            XK_6,                       5)
-    TAGKEYS(                            XK_7,                       6)
-    TAGKEYS(                            XK_8,                       7)
-    TAGKEYS(                            XK_9,                       8)
 };
 
 /* Definiciones de botones */
