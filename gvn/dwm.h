@@ -583,99 +583,98 @@ void attachstack(Client *c) {
   c->mon->stack = c;
 }
 
-void buttonpress(XEvent *e) {
-  unsigned int i, x, click;
-  int loop;
-  Arg arg = {0};
-  Client *c;
-  Monitor *m;
-  XButtonPressedEvent *ev = &e->xbutton;
+ void buttonpress(XEvent *e) {
+   unsigned int i, x, click;
+   int loop;
+   Arg arg = {0};
+   Client *c;
+   Monitor *m;
+   XButtonPressedEvent *ev = &e->xbutton;
 
-  click = ClkRootWin;
-  /* focus monitor if necessary */
-  if ((m = wintomon(ev->window)) && m != selmon) {
-    unfocus(selmon->sel, 1);
-    selmon = m;
-    focus(NULL);
-  }
-  if (ev->window == selmon->barwin) {
-    	if (selmon->previewshow) {
-		XUnmapWindow(dpy, selmon->tagwin);
-			selmon->previewshow = 0;
-	}
-    i = x = 0;
-    do
-      x += TEXTW(tags[i]);
-    while (ev->x >= x && ++i < LENGTH(tags));
-    if (i < LENGTH(tags)) {
-      click = ClkTagBar;
-      arg.ui = 1 << i;
-      goto execute_handler;
+   click = ClkRootWin;
+   /* focus monitor if necessary */
+   if ((m = wintomon(ev->window)) && m != selmon) {
+     unfocus(selmon->sel, 1);
+     selmon = m;
+     focus(NULL);
+   }
+   if (ev->window == selmon->barwin) {
+     if (selmon->previewshow) {
+       XUnmapWindow(dpy, selmon->tagwin);
+       selmon->previewshow = 0;
+     }
+     i = x = 0;
+     do
+       x += TEXTW(tags[i]);
+     while (ev->x >= x && ++i < LENGTH(tags));
+     if (i < LENGTH(tags)) {
+       click = ClkTagBar;
+       arg.ui = 1 << i;
      } else if (ev->x < x + TEXTW(selmon->ltsymbol)) {
-      click = ClkLtSymbol;
-      goto execute_handler;
-      }
+       click = ClkLtSymbol;
+     }
+     x += TEXTW(selmon->ltsymbol);
 
-		x += TEXTW(selmon->ltsymbol);
+     for (i = 0; i < LENGTH(launchers); i++) {
+       x += TEXTW(launchers[i].name);
+       if (ev->x < x) {
+         Arg a;
+         a.v = launchers[i].command;
+         spawn(&a);
+         return;
+       }
+     }
 
-		for(i = 0; i < LENGTH(launchers); i++) {
-			x += TEXTW(launchers[i].name);
+     if (ev->x > selmon->ww - (int)TEXTW(stext))
+       click = ClkStatusText;
+     else
+       click = ClkWinTitle;
+   }
 
-			if (ev->x < x) {
-				Arg a;
-				a.v = launchers[i].command;
-				spawn(&a);
-				return;
-			}
-	}
+   if (ev->window == selmon->tabwin) {
+     i = 0; x = 0;
+     for (c = selmon->clients; c; c = c->next) {
+       if (!ISVISIBLE(c)) continue;
+       x += selmon->tab_widths[i];
+       if (ev->x > x)
+         ++i;
+       else
+         break;
+       if (i >= m->ntabs) break;
+     }
+     if (c && ev->x <= x) {
+       click = ClkTabBar;
+       arg.ui = i;
+     } else {
+       x = selmon->ww - 2 * m->gappov;
+       for (loop = 2; loop >= 0; loop--) {
+         x -= selmon->tab_btn_w[loop];
+         if (ev->x > x)
+           break;
+       }
+       if (ev->x >= x)
+         click = ClkTabPrev + loop;
+     }
+   }
+   else if ((c = wintoclient(ev->window))) {
+     focus(c);
+     restack(selmon);
+     XAllowEvents(dpy, ReplayPointer, CurrentTime);
+     click = ClkClientWin;
+   }
 
-  if (ev->x > selmon->ww - (int)TEXTW(stext))
-         click = ClkStatusText;
-  else
-         click = ClkWinTitle;
-  }
-    	
-	if(ev->window == selmon->tabwin) {
-		i = 0; x = 0;
-		for(c = selmon->clients; c; c = c->next){
-			if(!ISVISIBLE(c)) continue;
-			x += selmon->tab_widths[i];
-			if (ev->x > x)
-				++i;
-			else
-				break;
-			if(i >= m->ntabs) break;
-		}
-		if(c && ev->x <= x) {
-			click = ClkTabBar;
-			arg.ui = i;
-		} else {
-      x = selmon->ww - 2 * m->gappov;
-			for (loop = 2; loop >= 0; loop--) {
-				x -= selmon->tab_btn_w[loop];
-				if (ev->x > x)
-					break;
-			}
-                        if (ev->x >= x)
-			      click = ClkTabPrev + loop;
-		}
-	}
-	else if((c = wintoclient(ev->window))) {
-    focus(c);
-    restack(selmon);
-    XAllowEvents(dpy, ReplayPointer, CurrentTime);
-    click = ClkClientWin;
-  }
++  /* Aquí empieza el handler de ejecución de botones */
++execute_handler:
++  for (i = 0; i < LENGTH(buttons); i++) {
++    if (click == buttons[i].click
++        && buttons[i].func
++        && buttons[i].button == ev->button
++        && buttons[i].mask == CLEANMASK(ev->state)) {
++      buttons[i].func(&(buttons[i].arg));
++    }
++  }
+ }
 
-execute_handler:
-
-  for (i = 0; i < LENGTH(buttons); i++)
-    if (click == buttons[i].click && buttons[i].func &&
-        buttons[i].button == ev->button &&
-        CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
-      buttons[i].func(
-         ((click == ClkTagBar || click == ClkTabBar) && buttons[i].arg.i == 0) ? &arg : &buttons[i].arg);
-}
 
 void checkotherwm(void) {
   xerrorxlib = XSetErrorHandler(xerrorstart);
