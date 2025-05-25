@@ -3,9 +3,8 @@
 #include <X11/XF86keysym.h>
 
 /* Apariencia */
-static const unsigned int borderpx  = 0;        /* píxeles del borde de las ventanas */
-static const unsigned int default_border = 0;   /* para volver al borde por defecto después de redimensionar dinámicamente */
-static const unsigned int snap      = 32;       /* píxeles de ajuste */
+static const unsigned int borderpx  = 1;        /* píxeles del borde de las ventanas */
+static const unsiSgned int snap      = 32;       /* píxeles de ajuste */
 static const unsigned int gappih    = 10;       /* espacio interior horizontal entre ventanas */
 static const unsigned int gappiv    = 10;       /* espacio interior vertical entre ventanas */
 static const unsigned int gappoh    = 10;       /* espacio exterior horizontal entre ventanas y borde de pantalla */
@@ -147,31 +146,24 @@ static const Key keys[] = {
     /* modificador                     tecla        función        argumento */
 
     // brillo y audio
-    {0,             XF86XK_AudioLowerVolume,    spawn, {.v = downvol}},
-    {0,             XF86XK_AudioMute, spawn,    {.v = mutevol }},
-    {0,             XF86XK_AudioRaiseVolume,    spawn, {.v = upvol}},
-    {0,             XF86XK_MonBrightnessUp,     spawn, {.v = light_up}},
-    {0,             XF86XK_MonBrightnessDown,   spawn, {.v = light_down}},
+    {0,             XF86XK_AudioLowerVolume,    spawn, {.v = downvol}},    // Baja el volumen 5% (tecla multimedia bajar volumen)
+    {0,             XF86XK_AudioMute,          spawn, {.v = mutevol }},   // Alternar mute/desmute (tecla multimedia silencio)
+    {0,             XF86XK_AudioRaiseVolume,    spawn, {.v = upvol}},     // Sube el volumen 5% (tecla multimedia subir volumen)
+    {0,             XF86XK_MonBrightnessUp,     spawn, {.v = light_up}},  // Aumenta brillo pantalla 5% (tecla multimedia brillo +)
+    {0,             XF86XK_MonBrightnessDown,   spawn, {.v = light_down}},// Reduce brillo pantalla 5% (tecla multimedia brillo -)
 
-    // capturas de pantalla (completa y recortada)
-    {MODKEY|ControlMask,                XK_u,       spawn, SHCMD("maim | xclip -selection clipboard -t image/png")},
-    {MODKEY,                            XK_u,       spawn, SHCMD("maim --select | xclip -selection clipboard -t image/png")},
-
+    // Capturas de pantalla
+    {ControlMask|ShiftMask,          XK_s,       spawn, SHCMD("maim --select | xclip -selection clipboard -t image/png")},  // Área seleccionada (Ctrl+Shift+S)
+    {ControlMask,                    XK_s,       spawn, SHCMD("maim | xclip -selection clipboard -t image/png")},           // Pantalla completa (Ctrl+S)
+    
     // lanzadores
     { MODKEY,                           XK_c,       spawn, SHCMD("rofi -show drun") },
-    { MODKEY,                           XK_Return,  spawn, SHCMD("st")},
+    { MODKEY,                           XK_Return,  spawn, SHCMD("alacritty")},
 
     // alternar elementos
-    { MODKEY,                           XK_b,       togglebar,      {0} },
-    { MODKEY|ControlMask,               XK_t,       togglegaps,     {0} },
-    { MODKEY|ShiftMask,                 XK_space,   togglefloating, {0} },
-    { MODKEY,                           XK_f,       togglefullscr,  {0} },
+    { MODKEY,                           XK_f,       togglefullscr,  {0} },         // MODKEY+f: Alternar pantalla completa para ventana actual
 
-    { MODKEY|ControlMask,               XK_w,       tabmode,        { -1 } },
-    { MODKEY,                           XK_j,       focusstack,     {.i = +1 } },
-    { MODKEY,                           XK_k,       focusstack,     {.i = -1 } },
-    { MODKEY,                           XK_i,       incnmaster,     {.i = +1 } },
-    { MODKEY,                           XK_d,       incnmaster,     {.i = -1 } },
+    // moverVentanas
 
     // mover vista
     { MODKEY,                           XK_Left,    shiftview,      {.i = -1 } },
@@ -228,11 +220,6 @@ static const Key keys[] = {
     { MODKEY,                           XK_period,  focusmon,       {.i = +1 } },
     { MODKEY|ShiftMask,                 XK_comma,   tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,                 XK_period,  tagmon,         {.i = +1 } },
-
-    // cambiar tamaño de borde
-    { MODKEY|ShiftMask,                 XK_minus,   setborderpx,    {.i = -1 } },
-    { MODKEY|ShiftMask,                 XK_p,       setborderpx,    {.i = +1 } },
-    { MODKEY|ShiftMask,                 XK_w,       setborderpx,    {.i = default_border } },
 
     // terminar dwm
     { MODKEY|ControlMask,               XK_q,       spawn, SHCMD("killall bar.sh chadwm") },
