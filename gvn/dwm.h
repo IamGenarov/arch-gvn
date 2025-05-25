@@ -203,9 +203,6 @@ struct Systray {
   Client *icons;
 };
 
-
-
-
 typedef struct {
 	const char** command;
 	const char* name;
