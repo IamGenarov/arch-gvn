@@ -4,7 +4,7 @@
 
 /* Apariencia */
 static const unsigned int borderpx  = 1;        /* píxeles del borde de las ventanas */
-static const unsiSgned int snap      = 32;       /* píxeles de ajuste */
+static const unsigned int snap      = 32;       /* píxeles de ajuste */
 static const unsigned int gappih    = 10;       /* espacio interior horizontal entre ventanas */
 static const unsigned int gappiv    = 10;       /* espacio interior vertical entre ventanas */
 static const unsigned int gappoh    = 10;       /* espacio exterior horizontal entre ventanas y borde de pantalla */
@@ -188,12 +188,6 @@ static const Key keys[] = {
     { MODKEY|ShiftMask, XK_Up,    movestack,  {.i = -1} },     // MODKEY+Shift+↑ : Mover ventana arriba en el stack
 
     /* ===== CONTROL DE ESPACIOS (GAPS) ===== */
-    // Ajustes generales (en la sección 'appearance' del archivo):
-    static const unsigned int gappih = 10;  // Espacio horizontal ENTRE ventanas
-    static const unsigned int gappiv = 10;  // Espacio vertical ENTRE ventanas
-    static const unsigned int gappoh = 15;  // Margen exterior horizontal (bordes laterales)
-    static const unsigned int gappov = 10;  // Margen exterior vertical (bordes superior/inferior)
-
     // Atajos de teclado (en la sección 'keys[]'):
     /* ----- Control BÁSICO ----- */
     { MODKEY|ControlMask, XK_equal,  incrgaps,  {.i = +1 } },  // [Super+Ctrl++] Aumentar TODOS los gaps
