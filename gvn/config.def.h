@@ -41,29 +41,29 @@ static const int new_window_attach_on_end = 0; /* 1: nueva ventana al final, 0: 
 #define ICONSPACING 8 /* espacio entre icono y título */
 
 /* Fuentes */
-static const char *fonts[] = {"Iosevka:style:medium:size=12", "JetBrainsMono Nerd Font Mono:style:medium:size=19"};
+static const char *fonts[] = { "JetBrainsMono Nerd Font Mono:style:medium:size=19", "Iosevka:style:medium:size=19"};
 
 // Tema
-#include "themes/onedark.h"
+#include "themes/rusia.h"
 
 /* Esquemas de colores */
 static const char *colors[][3] = {
-    /*                     fg       bg      borde */
-    [SchemeNorm]       = { gray3,   black,  gray2 },  /* Normal */
-    [SchemeSel]        = { gray4,   blue,   blue  },  /* Seleccionado */
-    [SchemeTitle]      = { white,   black,  black },  /* Título de ventana activa */
-    [TabSel]           = { blue,    gray2,  black },  /* Pestaña seleccionada */
-    [TabNorm]          = { gray3,   black,  black },  /* Pestaña normal */
-    [SchemeTag]        = { gray3,   black,  black },  /* Etiqueta */
-    [SchemeTag1]       = { blue,    black,  black },  /* Etiqueta 1 */
-    [SchemeTag2]       = { red,     black,  black },  /* Etiqueta 2 */
-    [SchemeTag3]       = { orange,  black,  black },  /* Etiqueta 3 */
-    [SchemeTag4]       = { green,   black,  black },  /* Etiqueta 4 */
-    [SchemeTag5]       = { pink,    black,  black },  /* Etiqueta 5 */
-    [SchemeLayout]     = { green,   black,  black },  /* Diseño */
-    [SchemeBtnPrev]    = { green,   black,  black },  /* Botón Anterior */
-    [SchemeBtnNext]    = { yellow,  black,  black },  /* Botón Siguiente */
-    [SchemeBtnClose]   = { red,     black,  black },  /* Botón Cerrar */
+    /* fg         bg         border   */
+    [SchemeNorm] = { gray3,    black,     gray2 },      // Normal: gris oscuro sobre negro
+    [SchemeSel]  = { gray4,    red,       red   },      // Seleccionado: gris claro sobre rojo (antes blue)
+    [SchemeTitle]  = { white,    black,     black },    // Título activo: blanco sobre negro
+    [TabSel]     = { red,      gray2,     black },      // Pestaña seleccionada: rojo sobre gris oscuro
+    [TabNorm]    = { gray3,    black,     black },      // Pestaña normal: gris oscuro sobre negro
+    [SchemeTag]  = { gray3,    black,     black },      // Etiqueta normal: gris oscuro
+    [SchemeTag1] = { red,      black,     black },      // Etiqueta 1: rojo puro
+    [SchemeTag2] = { red,     black,     black },      // Etiqueta 2: rojo anaranjado
+    [SchemeTag3] = { red,black,     black },      // Etiqueta 3: rojo parduzco 
+    [SchemeTag4] = { red, black,     black },      // Etiqueta 4: rojo oscuro
+    [SchemeTag5] = { red,     black,     black },      // Etiqueta 5: rosa rojizo
+    [SchemeLayout] = { dark_red,black,     black },     // Layout: rojo oscuro 
+    [SchemeBtnPrev] = { dark_red,black,   black },      // Botón Prev: rojo oscuro
+    [SchemeBtnNext] = { red_yellow,black, black },      // Botón Next: rojo amarillento
+    [SchemeBtnClose] = { red,    black,     black },    // Botón Close: rojo puro
 };
 
 /* Etiquetas */

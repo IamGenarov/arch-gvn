@@ -1,1 +1,12 @@
-a
+static const char black[]     = "#0e0e0e";      // Negro puro
+static const char white[]     = "#c0c0c0";     // Gris claro (casi blanco)
+static const char gray2[]     = "#1c1c1c";     // Gris muy oscuro (borde ventana inactiva)
+static const char gray3[]     = "#3a3a3a";     // Gris oscuro
+static const char gray4[]     = "#e0e0e0";     // Gris muy claro
+static const char red[]       = "#ff0000";     // Rojo puro (borde ventana activa)
+static const char dark_red[]  = "#5e0e0e";     // Rojo oscuro (antes verde)
+static const char red2[]      = "#ff3300";     // Rojo anaranjado
+static const char brown_red[] = "#801a00";     // Rojo parduzco oscuro (antes naranja)
+static const char red_yellow[]= "#a82a00";     // Rojo amarillento (antes amarillo)
+static const char pink[]      = "#ff003c";     // Rosa rojizo
+static const char col_borderbar[] = "#0e0e0e"; // Negro (borde interior)
