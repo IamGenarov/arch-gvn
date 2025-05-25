@@ -69,14 +69,6 @@ static const char *colors[][3] = {
 /* Etiquetas */
 static char *tags[] = {"", "", "", "", ""};  /* Iconos para etiquetas */
 
-/* Comando para lanzar eww */
-static const char* eww[] = { "eww", "open" , "eww", NULL };
-
-/* Lanzadores */
-static const Launcher launchers[] = {
-    /* comando     nombre a mostrar */
-    { eww,         "" },  /* Icono para el lanzador */
-};
 
 /* Esquemas de colores para etiquetas */
 static const int tagschemes[] = {
@@ -113,20 +105,20 @@ static const int lockfullscreen = 1; /* 1: forzar foco en ventana a pantalla com
 /* Diseños disponibles */
 static const Layout layouts[] = {
     /* símbolo     función de disposición */
-    { "[]=",      tile },    /* primera entrada es por defecto */
-    { "[M]",      monocle },
-    { "[@]",      spiral },
-    { "[\\]",     dwindle },
-    { "H[]",      deck },
-    { "TTT",      bstack },
-    { "===",      bstackhoriz },
-    { "HHH",      grid },
-    { "###",      nrowgrid },
-    { "---",      horizgrid },
-    { ":::",      gaplessgrid },
-    { "|M|",      centeredmaster },
-    { ">M>",      centeredfloatingmaster },
-    { "><>",      NULL },    /* sin función de disposición significa comportamiento flotante */
+    { "",      tile },    /* primera entrada es por defecto */
+    { "",      monocle },
+    { "",      spiral },
+    { "",     dwindle },
+    { "",      deck },
+    { "",      bstack },
+    { "",      bstackhoriz },
+    { "",      grid },
+    { "",      nrowgrid },
+    { "",      horizgrid },
+    { "",      gaplessgrid },
+    { "",      centeredmaster },
+    { "",      centeredfloatingmaster },
+    { "",      NULL },    /* sin función de disposición significa comportamiento flotante */
     { NULL,       NULL },
 };
 
