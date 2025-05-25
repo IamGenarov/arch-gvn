@@ -7,7 +7,7 @@
 
 **Arch GVN (GenkzVN)** es un conjunto de scripts que instalan una configuración avanzada y minimalista sobre una base Arch Linux (o cualquier distro compatible con `pacman`). El entorno gráfico está centrado en [DWM](https://dwm.suckless.org/), ofreciendo control total y rendimiento extremo desde el primer arranque.
 
-![Captura de pantalla](ArchGvn.png)
+![Captura de pantalla](CapturaPantalla.png)
 
 ---
 
