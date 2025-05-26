@@ -7,7 +7,7 @@
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![Arch Linux](https://img.shields.io/badge/Arch%20Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
 
-> Una distribución ligera, segura y rápida, diseñada para usuarios avanzados y profesionales de la ciberseguridad. Basada en Arch Linux y DWM.
+> Una distribución ligera, segura y rápida, diseñada para usuarios avanzados. Basada en Arch Linux y DWM.
 
 **Arch GVN (GenkzVN)** es un conjunto de scripts que instalan una configuración avanzada y minimalista sobre una base Arch Linux (o cualquier distro compatible con `pacman`). El entorno gráfico está centrado en [DWM](https://dwm.suckless.org/), ofreciendo control total y rendimiento extremo desde el primer arranque.
 
