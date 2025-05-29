@@ -1,4 +1,9 @@
-/* Ver archivo LICENSE para detalles de copyright y licencia. */
+// =============================================================================
+// Neofetch Configuration – gvn-arch
+// Author: GenaroV
+// Description: Custom setup for a warm and cozy system info display
+// using the gvn-arch branding.
+// =============================================================================
 
 #include <X11/XF86keysym.h>
 
