@@ -5,9 +5,9 @@
 */
 
 * {
-  background: #0f111a;
+  background: #000000;
   foreground: #f1f1f1;
-  selected: #ff4151;
+  selected:rgb(255, 0, 21);
 }
 
 window {
