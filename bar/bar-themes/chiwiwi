@@ -1,11 +1,14 @@
-#!/bin/dash
+# ~/.config/chadwm/scripts/bar-themes/chiwiwi
 
-# colors
+# Base Dracula + escala roja intensa personalizada
 
-black=#e0e0e0
-green=#5e5e5e
-white=#c0c0c0
-grey=#e0e0e0
-blue=#8d2323
-red=#ff3300
-darkblue=#4B0000
+# Colores neutros
+black="#21222c"     # Fondo general
+white="#f8f8f2"     # Texto blanco puro
+grey="#282a36"
+
+# Colores rojos
+red_icon_bg="#660000"      # Fondo rojo oscuro para iconos (bordó profundo)
+red_icon_fg="#ffffff"      # Texto blanco para iconos
+red_value_fg="#ff1a1a"     # Texto rojo sangre brillante para valores
+red_value_bg="#000000"     # Fondo negro para valores (contraste fuerte)

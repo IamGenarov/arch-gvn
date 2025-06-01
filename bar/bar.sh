@@ -1,16 +1,16 @@
 #!/bin/dash
-. ~/.config/chadwm/scripts/bar_themes/onedark
+. ~/.config/chadwm/scripts/bar-themes/chiwiwi
 
 battery() {
     cap="$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)"
     icon=""
-    printf "^c$black^^b$darkblue^ $icon "
-    printf "^c$black^^b$blue^ %s%% " "$cap"
+    printf "^c$red_icon_fg^^b$red_icon_bg^ $icon "
+    printf "^c$red_value_fg^^b$red_value_bg^ %s%% " "$cap"
 }
 
 clock() {
-    printf "^c$black^^b$darkblue^ 󱑆 "
-    printf "^c$black^^b$blue^ %s " "$(date '+%H:%M')"
+    printf "^c$red_icon_fg^^b$red_icon_bg^ 󱑆 "
+    printf "^c$red_value_fg^^b$red_value_bg^ %s " "$(date '+%H:%M')"
 }
 
 while :; do
