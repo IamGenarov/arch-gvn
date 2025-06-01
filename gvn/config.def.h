@@ -45,7 +45,7 @@ static const char *termcmd[]  = { "alacritty", "--working-directory", "/home/g3k
 
 
 /* Fuentes */
-static const char *fonts[] = { "xos4 Terminus:style:medium:size=20", "Iosevka:style:medium:size=19"};
+static const char *fonts[] = { "xos4 Terminus:style:medium:size=22", "Iosevka:style:medium:size=19"};
 
 // Tema
 #include "themes/rusia.h"
