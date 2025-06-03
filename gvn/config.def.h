@@ -71,7 +71,7 @@ static const char *colors[][3] = {
 };
 
 /* Etiquetas */
-static char *tags[] = {"", "", "", "", ""};
+static char *tags[] = {"", "", "", "󰞇", ""};
 
 /* Esquemas de colores para etiquetas */
 static const int tagschemes[] = {
