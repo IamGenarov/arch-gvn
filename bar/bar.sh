@@ -9,13 +9,13 @@ battery() {
 }
 
 clock() {
-    printf "^c$red_icon_fg^^b$red_icon_bg^ 󱑆 "
-    printf "^c$red_value_fg^^b$red_value_bg^ %s " "$(date '+%H:%M')"
+    icon="󱑆"
+    time="$(date '+%H:%M')"
+    printf "^c$red_icon_fg^^b$red_icon_bg^ $icon "
+    printf "^c$red_value_fg^^b$red_value_bg^ %s " "$time"
 }
 
 while :; do
+    xsetroot -name "$(battery) $(clock)"
     sleep 1
-    xsetroot -name "\
-$(battery)\
-$(clock)"
 done
