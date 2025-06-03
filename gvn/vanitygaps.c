@@ -19,17 +19,6 @@ setgaps(int oh, int ov, int ih, int iv)
 }
 
 void
-togglegaps(const Arg *arg)
-{
-	#if PERTAG_PATCH
-	selmon->pertag->enablegaps[selmon->pertag->curtag] = !selmon->pertag->enablegaps[selmon->pertag->curtag];
-	#else
-	enablegaps = !enablegaps;
-	#endif // PERTAG_PATCH
-	arrange(NULL);
-}
-
-void
 defaultgaps(const Arg *arg)
 {
 	setgaps(gappoh, gappov, gappih, gappiv);
@@ -65,50 +54,6 @@ incrogaps(const Arg *arg)
 		selmon->gappov + arg->i,
 		selmon->gappih,
 		selmon->gappiv
-	);
-}
-
-void
-incrohgaps(const Arg *arg)
-{
-	setgaps(
-		selmon->gappoh + arg->i,
-		selmon->gappov,
-		selmon->gappih,
-		selmon->gappiv
-	);
-}
-
-void
-incrovgaps(const Arg *arg)
-{
-	setgaps(
-		selmon->gappoh,
-		selmon->gappov + arg->i,
-		selmon->gappih,
-		selmon->gappiv
-	);
-}
-
-void
-incrihgaps(const Arg *arg)
-{
-	setgaps(
-		selmon->gappoh,
-		selmon->gappov,
-		selmon->gappih + arg->i,
-		selmon->gappiv
-	);
-}
-
-void
-incrivgaps(const Arg *arg)
-{
-	setgaps(
-		selmon->gappoh,
-		selmon->gappov,
-		selmon->gappih,
-		selmon->gappiv + arg->i
 	);
 }
 

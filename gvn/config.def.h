@@ -40,12 +40,8 @@ static const int new_window_attach_on_end = 0; /* 1: nueva ventana al final, 0: 
 #define ICONSIZE 10   /* tamaño de iconos */
 #define ICONSPACING 8 /* espacio entre icono y título */
 
-
-static const char *termcmd[]  = { "alacritty", "--working-directory", "/home/g3k", NULL };
-
-
 /* Fuentes */
-static const char *fonts[] = { "xos4 Terminus:style:medium:size=22", "Iosevka:style:medium:size=19"};
+static const char *fonts[] = { "xos4 Terminus:style:medium:size=24", "Iosevka:style:medium:size=19"};
 
 // Tema
 #include "themes/rusia.h"
@@ -71,11 +67,11 @@ static const char *colors[][3] = {
 };
 
 /* Etiquetas */
-static char *tags[] = {"", "", "", "󰞇", ""};
+static char *tags[] = {"", "", "",""};
 
 /* Esquemas de colores para etiquetas */
 static const int tagschemes[] = {
-    SchemeTag1, SchemeTag2, SchemeTag3, SchemeTag4, SchemeTag5
+    SchemeTag1, SchemeTag2, SchemeTag3, SchemeTag4
 };
 
 /* Estilo de subrayado para etiquetas */
