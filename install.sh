@@ -1,52 +1,38 @@
 #!/bin/bash
-set -e
 
-echo "Actualizando sistema e instalando paquetes base..."
-sudo pacman -Syu --noconfirm
-sudo pacman -S --noconfirm base-devel xorg xorg-xinit libx11 libxft libxinerama picom feh xclip brightnessctl playerctl network-manager-applet lxappearance
-sudo pacman -S --noconfirm alacritty xorg-xos4-terminus neofetch rofi zsh xclip wl-clipboard ttf-meslo-nerd-font-powerlevel10k
+# Clonar genxwm si no existe
+if [ ! -d "$HOME/.config/genxwm" ]; then
+    git clone https://github.com/IamGenarov/genxwm.git --depth 1 "$HOME/.config/genxwm"
+fi
 
-echo "Instalando Oh My Zsh..."
-export RUNZSH=no
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-echo "Instalando Powerlevel10k y plugins..."
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-
-echo "Cambiando shell predeterminado a Zsh..."
-chsh -s $(which zsh)
-
-echo "Creando carpetas necesarias..."
+# Crear carpetas necesarias
+mkdir -p "$HOME/.config/alacritty"
+mkdir -p "$HOME/.config/neofetch"
+mkdir -p "$HOME/.config/rofi/themes"
+mkdir -p "$HOME/.config/bar/bar-themes"
 mkdir -p "$HOME/Pictures/.wallpapers"
-mkdir -p "$HOME/.config"
 
-echo "Copiando wallpapers..."
-cp -v ./wallpapers/fp1.png "$HOME/Pictures/.wallpapers/"
-cp -v ./wallpapers/fp2.png "$HOME/Pictures/.wallpapers/"
-cp -v ./wallpapers/fp3.png "$HOME/Pictures/.wallpapers/"
-cp -v ./wallpapers/fp4.png "$HOME/Pictures/.wallpapers/"
+# Mover archivos de configuración
+mv -v "$HOME/alacritty.toml" "$HOME/.config/alacritty/" 2>/dev/null
+mv -v "$HOME/config.conf" "$HOME/.config/neofetch/" 2>/dev/null
+mv -v "$HOME/config.rasi" "$HOME/.config/rofi/themes/" 2>/dev/null
 
-echo "Copiando archivos ocultos de HOME al directorio $HOME..."
-cp -v ./HOME/.cambiar_fondo.sh "$HOME/"
-cp -v ./HOME/.p10k.zsh "$HOME/"
-cp -v ./HOME/.zshrc "$HOME/"
+# Mover scripts y config personales
+mv -v "$HOME/.cambiar_fondo.sh" "$HOME/.p10k.zsh" "$HOME/.zshrc" "$HOME/" 2>/dev/null
 
-echo "Copiando configuración .config al directorio $HOME/.config..."
-cp -rv ./ .config "$HOME/.config"
+# Mover bar y scripts
+mv -v "$HOME/bar.sh" "$HOME/run.sh" "$HOME/.config/bar/" 2>/dev/null
 
-# Corrijo esa línea, porque la estructura en tu repo es: tienes carpeta .config
-# Así que la línea correcta sería:
-cp -rv ./.config/* "$HOME/.config/"
+# Mover temas de barra
+if [ -d "$HOME/bar-themes" ]; then
+    mv -v "$HOME/bar-themes/"* "$HOME/.config/bar/bar-themes/" 2>/dev/null
+    rm -r "$HOME/bar-themes"
+fi
 
-echo "Configurando permisos de scripts..."
-chmod +x "$HOME/.cambiar_fondo.sh"
+# Mover fondo de pantalla
+mv -v "$HOME/fp"*.png "$HOME/Pictures/.wallpapers/" 2>/dev/null
 
-echo "Copiando genwm a ~/.config/genwm..."
-mkdir -p "$HOME/.config/genwm"
-cp -rv ./genwm/* "$HOME/.config/genwm/"
+# Mover otros archivos
+[ -f "$HOME/gvn.txt" ] && mv -v "$HOME/gvn.txt" "$HOME/Documentos/" 2>/dev/null
 
-echo "¡Instalación completada!"
-echo "Abre una nueva terminal o ejecuta 'zsh' para comenzar a usar Zsh con Powerlevel10k."
-echo "Usa el comando 'cambiar_fondo' para cambiar el fondo de pantalla fácilmente."
+echo "✅ Organización completada."
