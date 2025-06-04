@@ -262,7 +262,7 @@ static void focusstack(const Arg *arg);
 static void focuswin(const Arg *arg);
 static Atom getatomprop(Client *c, Atom prop);
 static Picture geticonprop(Window w, unsigned int *icw, unsigned int *ich);
-static int getrootptr(int *x, int *y);
+
 static long getstate(Window w);
 static unsigned int getsystraywidth();
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
@@ -353,8 +353,8 @@ static Client *wintoclient(Window w);
 static Monitor *wintomon(Window w);
 static Client *wintosystrayicon(Window w);
 static int xerror(Display *dpy, XErrorEvent *ee);
-static int xerrordummy(Display *dpy, XErrorEvent *ee);
-static int xerrorstart(Display *dpy, XErrorEvent *ee);
+
+
 static void zoom(const Arg *arg);
 
 /* variables */
@@ -682,7 +682,7 @@ execute_handler:
 
 
 void checkotherwm(void) {
-  xerrorxlib = XSetErrorHandler(xerrorstart);
+  
   /* this causes an error if some other window manager is running */
   XSelectInput(dpy, DefaultRootWindow(dpy), SubstructureRedirectMask);
   XSync(dpy, False);
@@ -1818,13 +1818,7 @@ Atom getatomprop(Client *c, Atom prop) {
   return atom;
 }
 
-int getrootptr(int *x, int *y) {
-  int di;
-  unsigned int dui;
-  Window dummy;
 
-  return XQueryPointer(dpy, root, &dummy, &dummy, x, y, &di, &di, &dui);
-}
 
 long getstate(Window w) {
   int format;
@@ -1987,7 +1981,7 @@ void killclient(const Arg *arg) {
   if (!sendevent(selmon->sel->win, wmatom[WMDelete], NoEventMask,
                  wmatom[WMDelete], CurrentTime, 0, 0, 0)) {
     XGrabServer(dpy);
-    XSetErrorHandler(xerrordummy);
+    
     XSetCloseDownMode(dpy, DestroyAll);
     XKillClient(dpy, selmon->sel->win);
     XSync(dpy, False);
@@ -2213,8 +2207,6 @@ void movemouse(const Arg *arg) {
   if (XGrabPointer(dpy, root, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
                    None, cursor[CurMove]->cursor, CurrentTime) != GrabSuccess)
     return;
-  if (!getrootptr(&x, &y))
-    return;
   do {
     XMaskEvent(dpy, MOUSEMASK | ExposureMask | SubstructureRedirectMask, &ev);
     switch (ev.type) {
@@ -2292,8 +2284,7 @@ placemouse(const Arg *arg)
 	if (arg->i == 2) // warp cursor to client center
 		XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, WIDTH(c) / 2, HEIGHT(c) / 2);
 
-	if (!getrootptr(&x, &y))
-		return;
+	
 
 	do {
 		XMaskEvent(dpy, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
@@ -3239,8 +3230,7 @@ void unmanage(Client *c, int destroyed) {
   if (!destroyed) {
     wc.border_width = c->oldbw;
     XGrabServer(dpy); /* avoid race conditions */
-    XSetErrorHandler(xerrordummy);
-    XSelectInput(dpy, c->win, NoEventMask);
+       XSelectInput(dpy, c->win, NoEventMask);
     XConfigureWindow(dpy, c->win, CWBorderWidth, &wc); /* restore border */
     XUngrabButton(dpy, AnyButton, AnyModifier, c->win);
     setclientstate(c, WithdrawnState);
@@ -3735,7 +3725,7 @@ Monitor *wintomon(Window w) {
   Client *c;
   Monitor *m;
 
-  if (w == root && getrootptr(&x, &y))
+  if (w == root)
     return recttomon(x, y, 1, 1);
   for (m = mons; m; m = m->next)
     if (w == m->barwin || w == m->tabwin)
@@ -3765,14 +3755,6 @@ int xerror(Display *dpy, XErrorEvent *ee) {
   return xerrorxlib(dpy, ee); /* may call exit */
 }
 
-int xerrordummy(Display *dpy, XErrorEvent *ee) { return 0; }
-
-/* Startup Error handler to check if another window manager
- * is already running. */
-int xerrorstart(Display *dpy, XErrorEvent *ee) {
-  die("dwm: another window manager is already running");
-  return -1;
-}
 
 Monitor *systraytomon(Monitor *m) {
   Monitor *t;
