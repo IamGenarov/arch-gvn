@@ -1,4 +1,25 @@
-
+/* See LICENSE file for copyright and license details.
+ *
+ * dynamic window manager is designed like any other X client as well. It is
+ * driven through handling X events. In contrast to other X clients, a window
+ * manager selects for SubstructureRedirectMask on the root window, to receive
+ * events about window (dis-)appearance. Only one X connection at a time is
+ * allowed to select for this event mask.
+ *
+ * The event handlers of dwm are organized in an array which is accessed
+ * whenever a new event has been fetched. This allows event dispatching
+ * in O(1) time.
+ *
+ * Each child of the root window is called a client, except windows which have
+ * set the override_redirect flag. Clients are organized in a linked client
+ * list on each monitor, the focus history is remembered through a stack list
+ * on each monitor. Each client contains a bit array to indicate the tags of a
+ * client.
+ *
+ * Keys and tagging rules are organized as arrays and defined in config.h.
+ *
+ * To understand everything else, start reading main().
+ */
 #include <X11/Xatom.h>
 #include <X11/Xlib.h>
 #include <X11/Xproto.h>
@@ -208,22 +229,6 @@ typedef struct {
 	const char* name;
 } Launcher;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* function declarations */
 static void applyrules(Client *c);
 static int applysizehints(Client *c, int *x, int *y, int *w, int *h,
@@ -262,7 +267,7 @@ static void focusstack(const Arg *arg);
 static void focuswin(const Arg *arg);
 static Atom getatomprop(Client *c, Atom prop);
 static Picture geticonprop(Window w, unsigned int *icw, unsigned int *ich);
-
+static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static unsigned int getsystraywidth();
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
@@ -353,8 +358,8 @@ static Client *wintoclient(Window w);
 static Monitor *wintomon(Window w);
 static Client *wintosystrayicon(Window w);
 static int xerror(Display *dpy, XErrorEvent *ee);
-
-
+static int xerrordummy(Display *dpy, XErrorEvent *ee);
+static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
 
 /* variables */
@@ -599,13 +604,14 @@ void attachstack(Client *c) {
   c->mon->stack = c;
 }
 
- void buttonpress(XEvent *e) {
+void buttonpress(XEvent *e) {
    unsigned int i, x, click;
    int loop;
    Arg arg = {0};
    Client *c;
    Monitor *m;
    XButtonPressedEvent *ev = &e->xbutton;
+
 
    click = ClkRootWin;
    /* focus monitor if necessary */
@@ -631,11 +637,13 @@ void attachstack(Client *c) {
      }
      x += TEXTW(selmon->ltsymbol);
 
+
      if (ev->x > selmon->ww - (int)TEXTW(stext))
        click = ClkStatusText;
      else
        click = ClkWinTitle;
    }
+
 
    if (ev->window == selmon->tabwin) {
      i = 0; x = 0;
@@ -680,9 +688,8 @@ execute_handler:
   }
 }
 
-
 void checkotherwm(void) {
-  
+  xerrorxlib = XSetErrorHandler(xerrorstart);
   /* this causes an error if some other window manager is running */
   XSelectInput(dpy, DefaultRootWindow(dpy), SubstructureRedirectMask);
   XSync(dpy, False);
@@ -1440,6 +1447,8 @@ void dragmfact(const Arg *arg) {
     ;
 }
 
+
+
 void drawbar(Monitor *m) {
   int x, y = borderpx, w, sw = 0, stw = 0;
   int bh_n = bh - borderpx * 2;
@@ -1454,6 +1463,7 @@ void drawbar(Monitor *m) {
   unsigned int i, occ = 0, urg = 0;
   Client *c;
 
+
   XSetForeground(drw->dpy, drw->gc, clrborder.pixel);
   if(floatbar){
     XFillRectangle(drw->dpy, drw->drawable, drw->gc, 0, 0, m->ww - m->gappov * 2, bh);
@@ -1461,16 +1471,20 @@ void drawbar(Monitor *m) {
     XFillRectangle(drw->dpy, drw->drawable, drw->gc, 0, 0, m->ww, bh);
   }
 
+
   if (showsystray && m == systraytomon(m))
     stw = getsystraywidth();
 
+
   if (!m->showbar)
-   		return;
+      return;
+
 
   /* draw status first so it can be overdrawn by tags later */
   if (m == selmon) { /* status is only drawn on selected monitor */
     sw = mw - drawstatusbar(m, bh_n, stext);
   }
+
 
   resizebarwin(m);
   for (c = m->clients; c; c = c->next) {
@@ -1515,6 +1529,7 @@ void drawbar(Monitor *m) {
   }
   drw_map(drw, m->barwin, 0, 0, m->ww - stw, bh);
 }
+
 
 static uint32_t prealpha(uint32_t p) {
 	uint8_t a = p >> 24u;
@@ -1818,7 +1833,13 @@ Atom getatomprop(Client *c, Atom prop) {
   return atom;
 }
 
+int getrootptr(int *x, int *y) {
+  int di;
+  unsigned int dui;
+  Window dummy;
 
+  return XQueryPointer(dpy, root, &dummy, &dummy, x, y, &di, &di, &dui);
+}
 
 long getstate(Window w) {
   int format;
@@ -1981,7 +2002,7 @@ void killclient(const Arg *arg) {
   if (!sendevent(selmon->sel->win, wmatom[WMDelete], NoEventMask,
                  wmatom[WMDelete], CurrentTime, 0, 0, 0)) {
     XGrabServer(dpy);
-    
+    XSetErrorHandler(xerrordummy);
     XSetCloseDownMode(dpy, DestroyAll);
     XKillClient(dpy, selmon->sel->win);
     XSync(dpy, False);
@@ -2207,6 +2228,8 @@ void movemouse(const Arg *arg) {
   if (XGrabPointer(dpy, root, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
                    None, cursor[CurMove]->cursor, CurrentTime) != GrabSuccess)
     return;
+  if (!getrootptr(&x, &y))
+    return;
   do {
     XMaskEvent(dpy, MOUSEMASK | ExposureMask | SubstructureRedirectMask, &ev);
     switch (ev.type) {
@@ -2284,7 +2307,8 @@ placemouse(const Arg *arg)
 	if (arg->i == 2) // warp cursor to client center
 		XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, WIDTH(c) / 2, HEIGHT(c) / 2);
 
-	
+	if (!getrootptr(&x, &y))
+		return;
 
 	do {
 		XMaskEvent(dpy, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
@@ -3230,7 +3254,8 @@ void unmanage(Client *c, int destroyed) {
   if (!destroyed) {
     wc.border_width = c->oldbw;
     XGrabServer(dpy); /* avoid race conditions */
-       XSelectInput(dpy, c->win, NoEventMask);
+    XSetErrorHandler(xerrordummy);
+    XSelectInput(dpy, c->win, NoEventMask);
     XConfigureWindow(dpy, c->win, CWBorderWidth, &wc); /* restore border */
     XUngrabButton(dpy, AnyButton, AnyModifier, c->win);
     setclientstate(c, WithdrawnState);
@@ -3725,7 +3750,7 @@ Monitor *wintomon(Window w) {
   Client *c;
   Monitor *m;
 
-  if (w == root)
+  if (w == root && getrootptr(&x, &y))
     return recttomon(x, y, 1, 1);
   for (m = mons; m; m = m->next)
     if (w == m->barwin || w == m->tabwin)
@@ -3755,6 +3780,14 @@ int xerror(Display *dpy, XErrorEvent *ee) {
   return xerrorxlib(dpy, ee); /* may call exit */
 }
 
+int xerrordummy(Display *dpy, XErrorEvent *ee) { return 0; }
+
+/* Startup Error handler to check if another window manager
+ * is already running. */
+int xerrorstart(Display *dpy, XErrorEvent *ee) {
+  die("dwm: another window manager is already running");
+  return -1;
+}
 
 Monitor *systraytomon(Monitor *m) {
   Monitor *t;
