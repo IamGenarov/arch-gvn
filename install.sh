@@ -1,6 +1,3 @@
-
-
-
 #!/bin/bash
 
 # Humo animado (frames cíclicos)
@@ -14,21 +11,25 @@ smoke_frames=(
 "    "
 )
 
-# Función para mostrar el tren con humo en una posición
+# Función para mostrar el tren con humo en posición dada
 print_train() {
     clear
     local pos=$1
     local frame=$2
-    local space=$(printf "%${pos}s" "")
+    local smoke_space="   "  # fijo para el humo (no cambia)
+    local train_space=$(printf "%${pos}s" "")
 
-    echo "${space}${smoke_frames[$frame]}"
+    # Imprime el humo siempre en la misma posición (fija)
+    echo "${smoke_space}${smoke_frames[$frame]}"
+
+    # Imprime el tren desplazado a la derecha (pos espacios)
     cat <<EOF
-${space}   ___     ____
-${space}  |_ _|   |__ /   _ _     __ _      _ _    ___
-${space}   | |     |_ \  | ' \   / _\` |    | '_|  / _ \ 
-${space}  |___|   |___/  |_||_|  \__,_|   _|_|_   \___/
-${space} _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
-${space} "\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-' 
+${train_space}   ___     ____
+${train_space}  |_ _|   |__ /   _ _     __ _      _ _    ___
+${train_space}   | |     |_ \  | ' \   / _\` |    | '_|  / _ \ 
+${train_space}  |___|   |___/  |_||_|  \__,_|   _|_|_   \___/
+${train_space} _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
+${train_space} "\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-' 
 EOF
 }
 
@@ -39,7 +40,7 @@ for i in {0..20}; do
     sleep 0.1
 done
 
-# Y hacia la izquierda
+# Animación hacia la izquierda
 for ((i=20; i>=0; i--)); do
     frame=$((i % ${#smoke_frames[@]}))
     print_train "$i" "$frame"
