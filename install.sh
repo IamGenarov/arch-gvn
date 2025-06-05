@@ -118,6 +118,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 # 11. Utilidades adicionales
 echo "[+] Instalando utilidades: rofi, feh, nano..."
 sudo pacman -S --noconfirm rofi feh nano || true
+sudo pacman -S --noconfirm picom flameshot || true
 
 echo "[✔] Todo listo. Dependencias y utilidades instaladas correctamente."
 
@@ -157,7 +158,7 @@ cp -r "$CONFIG_DIR/fonts/"* "$HOME/.local/share/fonts/" 2>/dev/null || true
 echo "[+] Limpieza del directorio temporal..."
 rm -rf "$CONFIG_DIR" || true
 
-# Dar permisos de ejecución a scripts importantes
+# Dar permisos de ejecución a scripts 
 echo "[+] Dando permisos de ejecución a launch.sh y cambiar_pantalla.sh..."
 chmod +x "$HOME/.config/polybar/launch.sh" 2>/dev/null || true
 chmod +x "$HOME/.cambiar_fondo.sh" 2>/dev/null || true
