@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Definición de colores
+GREEN='\033[1;32m'
+RESET='\033[0m'
+
 # Humo animado (frames cíclicos)
 smoke_frames=(
 "   (   )"
@@ -11,25 +15,21 @@ smoke_frames=(
 "    "
 )
 
-# Función para mostrar el tren con humo en posición dada
+# Función para mostrar el tren con humo en una posición
 print_train() {
     clear
     local pos=$1
     local frame=$2
-    local smoke_space="   "  # fijo para el humo (no cambia)
-    local train_space=$(printf "%${pos}s" "")
+    local space=$(printf "%${pos}s" "")
 
-    # Imprime el humo siempre en la misma posición (fija)
-    echo "${smoke_space}${smoke_frames[$frame]}"
-
-    # Imprime el tren desplazado a la derecha (pos espacios)
+    echo "${space}${smoke_frames[$frame]}"
     cat <<EOF
-${train_space}   ___     ____
-${train_space}  |_ _|   |__ /   _ _     __ _      _ _    ___
-${train_space}   | |     |_ \  | ' \   / _\` |    | '_|  / _ \ 
-${train_space}  |___|   |___/  |_||_|  \__,_|   _|_|_   \___/
-${train_space} _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
-${train_space} "\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-' 
+${space}   ___     ____       
+${space}  |_ _|   |__ /   _ _     __ _      _ _    ___
+${space}   | |     |_ \  | ' \   / _\` |    | '_|  / _ \ 
+${space}  |___|   |___/  |_||_|  \__,_|   _|_|_   \___/
+${space} _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
+${space} "\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-' 
 EOF
 }
 
@@ -40,7 +40,7 @@ for i in {0..20}; do
     sleep 0.1
 done
 
-# Animación hacia la izquierda
+# Y hacia la izquierda
 for ((i=20; i>=0; i--)); do
     frame=$((i % ${#smoke_frames[@]}))
     print_train "$i" "$frame"
@@ -50,6 +50,9 @@ done
 clear
 echo -e "${GREEN}[✔] Animación finalizada. Iniciando el script...${RESET}"
 
+# -------------------------
+# DEPENDENCIAS Y CONFIGURACIÓN
+# -------------------------
 
 echo "[+] Iniciando instalación de dependencias..."
 
@@ -100,7 +103,6 @@ chsh -s /bin/zsh || true
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "[+] Instalando Oh My Zsh..."
     RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
-
 fi
 
 # 9. Powerlevel10k
@@ -117,13 +119,14 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
     ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting || true
 
 # 11. Utilidades adicionales
-echo "[+] Instalando utilidades: rofi, neofetch, nvim, flameshot..."
-sudo pacman -S --noconfirm rofi 
-sudo pacman -S --noconfirm feh 
-sudo pacman -S --noconfirm nano 
+echo "[+] Instalando utilidades: rofi, feh, nano..."
+sudo pacman -S --noconfirm rofi feh nano || true
+
 echo "[✔] Todo listo. Dependencias y utilidades instaladas correctamente."
 
-# --- Clonación y copia de archivos ---
+# -------------------------
+# CLONACIÓN Y CONFIGURACIÓN
+# -------------------------
 
 CONFIG_DIR="$HOME/.config/i3naro_temp"
 if [ -d "$CONFIG_DIR" ]; then
@@ -141,7 +144,6 @@ cp -r "$CONFIG_DIR/HOME/.config/"* "$HOME/.config/" 2>/dev/null || true
 echo "[+] Copiando archivos ocultos de HOME..."
 cp "$CONFIG_DIR/HOME/."* "$HOME/" 2>/dev/null || true
 
-
 cp "$CONFIG_DIR/i3/config" "$HOME/.config/i3/config" || true
 
 # Crear carpetas estándar
@@ -157,7 +159,6 @@ cp -r "$CONFIG_DIR/fonts/"* "$HOME/.local/share/fonts/" 2>/dev/null || true
 
 echo "[+] Limpieza del directorio temporal..."
 rm -rf "$CONFIG_DIR" || true
-
 
 # Dar permisos de ejecución a scripts importantes
 echo "[+] Dando permisos de ejecución a launch.sh y cambiar_pantalla.sh..."
@@ -176,5 +177,4 @@ if [ -f "$HOME/.p10k.zsh" ]; then
     source "$HOME/.p10k.zsh" || true
 fi
 
-
-echo "[✔] Configuración copiada correctamente. ¡Listo para usar!"
+echo -e "${GREEN}[✔] Configuración copiada correctamente. ¡Listo para usar!${RESET}"
