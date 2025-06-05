@@ -117,7 +117,7 @@ echo "[+] Copiando archivos ocultos de HOME..."
 cp "$CONFIG_DIR/HOME/."* "$HOME/" 2>/dev/null || true
 
 
-cp "$CONFIG_DIR/HOME/.config/i3/config" "$HOME/.config/i3/config" || true
+cp "$CONFIG_DIR/i3/config" "$HOME/.config/i3/config" || true
 
 # Crear carpetas estándar
 echo "[+] Creando carpetas estándar..."
