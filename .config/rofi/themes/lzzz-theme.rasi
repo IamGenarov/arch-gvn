@@ -6,7 +6,7 @@
 * {
     // Colores base (IGUAL QUE ANTES)
     bg0: #000000;          // Negro puro
-    bg1: #1A1A1A;          // Plomo oscuro  
+    bg1: #0A0A0A;          // Plomo oscuro  
     grey0: #333333;        // Gris base
     fg0: #FFFFFF;          // Texto blanco
 
