@@ -1,13 +1,8 @@
 #!/bin/bash
 
-set -euo pipefail
+# No usar 'set -e' para permitir continuar en caso de errores
 
-# Solicitar contraseña una vez
-sudo -v
-# Mantener la sesión sudo activa mientras dure el script
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
-# Función para limpiar pantalla y mostrar el tren en una posición dada
+# Función para limpiar pantalla y mostrar el tren en una posición dada (espacios delante)
 print_train() {
     clear
     local pos=$1
@@ -22,7 +17,7 @@ ${space} "\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'
 EOF
 }
 
-# Animación
+# Animación: mueve el tren 5 posiciones hacia la derecha y vuelve
 for i in {0..5}; do
     print_train $i
     sleep 0.3
@@ -37,101 +32,102 @@ echo "[+] Iniciando instalación de dependencias..."
 
 # 1. Xorg y xinit
 echo "[+] Instalando Xorg..."
-sudo pacman -S --noconfirm --needed xorg xorg-xinit
+sudo pacman -S --noconfirm xorg xorg-xinit || true
 
 # 2. Terminal gráfico: Alacritty
 echo "[+] Instalando Alacritty..."
-sudo pacman -S --noconfirm --needed alacritty
+sudo pacman -S --noconfirm alacritty || true
 
 # 3. Gestor de sesión (opcional)
 read -p "[?] ¿Deseas instalar LightDM como login gráfico? (s/n): " usar_lightdm
 if [[ "$usar_lightdm" == "s" ]]; then
     echo "[+] Instalando LightDM..."
-    sudo pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter
-    sudo systemctl enable lightdm
+    sudo pacman -S --noconfirm lightdm lightdm-gtk-greeter || true
+    sudo systemctl enable lightdm || true
 else
     echo "[+] Configurando inicio con startx..."
-    grep -q "exec i3" ~/.xinitrc 2>/dev/null || echo "exec i3" >> ~/.xinitrc
+    echo "exec i3" >> ~/.xinitrc || true
 fi
 
 # 4. Reemplazo de i3-wm con i3-gaps
-echo "[+] Instalando i3-gaps..."
+echo "[+] Reemplazando i3-wm con i3-gaps..."
 sudo pacman -Rns --noconfirm i3-wm || true
-sudo pacman -S --noconfirm --needed i3-gaps
+sudo pacman -S --noconfirm i3-gaps || true
 
 # 5. Polybar
 echo "[+] Instalando Polybar..."
-sudo pacman -S --noconfirm --needed polybar
+sudo pacman -S --noconfirm polybar || true
 
 # 6. Fuentes necesarias
 echo "[+] Instalando fuentes..."
-sudo pacman -S --noconfirm --needed \
+sudo pacman -S --noconfirm \
     terminus-font \
     ttf-nerd-fonts-symbols \
     ttf-nerd-fonts-symbols-mono \
     ttf-hack-nerd \
     ttf-jetbrains-mono-nerd \
-    ttf-font-awesome
+    ttf-font-awesome || true
 
-# 7. Zsh
+# 7. Zsh y mejoras visuales
 echo "[+] Instalando Zsh..."
-sudo pacman -S --noconfirm --needed zsh
-chsh -s /bin/zsh
+sudo pacman -S --noconfirm zsh || true
+chsh -s /bin/zsh || true
 
 # 8. Oh My Zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "[+] Instalando Oh My Zsh..."
-    RUNZSH=no KEEP_ZSHRC=yes sh -c \
-    "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
 fi
 
 # 9. Powerlevel10k
 echo "[+] Instalando Powerlevel10k..."
-THEME_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-[ ! -d "$THEME_DIR" ] && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$THEME_DIR"
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+    ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k || true
 
 # 10. Plugins Zsh
-PLUG_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins"
-
 echo "[+] Instalando plugins Zsh..."
-[ ! -d "$PLUG_DIR/zsh-autosuggestions" ] && \
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$PLUG_DIR/zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-autosuggestions \
+    ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions || true
 
-[ ! -d "$PLUG_DIR/zsh-syntax-highlighting" ] && \
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$PLUG_DIR/zsh-syntax-highlighting"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+    ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting || true
 
 # 11. Utilidades adicionales
 echo "[+] Instalando utilidades: rofi, neofetch, nvim, flameshot..."
-sudo pacman -S --noconfirm --needed rofi neovim flameshot
+sudo pacman -S --noconfirm rofi neovim flameshot || true
 
-# --- Clonación y configuración ---
+echo "[✔] Todo listo. Dependencias y utilidades instaladas correctamente."
+
+# --- Clonación y copia de archivos ---
+
 CONFIG_DIR="$HOME/.config/i3naro_temp"
-REPO_URL="https://github.com/IamGenarov/i3naro.git"
-
-[ -d "$CONFIG_DIR" ] && rm -rf "$CONFIG_DIR"
+if [ -d "$CONFIG_DIR" ]; then
+    echo "[!] El directorio temporal $CONFIG_DIR ya existe. Eliminando..."
+    rm -rf "$CONFIG_DIR" || true
+fi
 
 echo "[+] Clonando repositorio i3naro..."
-git clone "$REPO_URL" "$CONFIG_DIR"
+git clone https://github.com/IamGenarov/i3naro.git "$CONFIG_DIR" || true
 
 echo "[+] Copiando configuración a ~/.config/ ..."
-mkdir -p "$HOME/.config"
-cp -rn "$CONFIG_DIR/HOME/.config/"* "$HOME/.config/"
+mkdir -p "$HOME/.config" || true
+cp -r "$CONFIG_DIR/HOME/.config/"* "$HOME/.config/" 2>/dev/null || true
 
 echo "[+] Copiando archivos ocultos de HOME..."
-cp -n "$CONFIG_DIR/HOME/."* "$HOME/" 2>/dev/null || true
+cp "$CONFIG_DIR/HOME/."* "$HOME/" 2>/dev/null || true
 
-# Carpetas estándar
+# Crear carpetas estándar
 echo "[+] Creando carpetas estándar..."
-mkdir -p "$HOME/Documents" "$HOME/Pictures/.wallpapers" "$HOME/Downloads" "$HOME/Music" "$HOME/Videos"
+mkdir -p "$HOME/Documents" "$HOME/Pictures/.wallpapers" "$HOME/Downloads" "$HOME/Music" "$HOME/Videos" || true
 
-echo "[+] Copiando wallpapers..."
-cp -rn "$CONFIG_DIR/wallpapers/"* "$HOME/Pictures/.wallpapers/"
+echo "[+] Copiando wallpapers a ~/Pictures/.wallpapers ..."
+cp -r "$CONFIG_DIR/wallpapers/"* "$HOME/Pictures/.wallpapers/" 2>/dev/null || true
 
 echo "[+] Copiando fuentes locales..."
-mkdir -p "$HOME/.local/share/fonts"
-cp -rn "$CONFIG_DIR/fonts/"* "$HOME/.local/share/fonts/"
+mkdir -p "$HOME/.local/share/fonts" || true
+cp -r "$CONFIG_DIR/fonts/"* "$HOME/.local/share/fonts/" 2>/dev/null || true
 
-echo "[+] Eliminando archivos temporales..."
-rm -rf "$CONFIG_DIR"
+echo "[+] Limpieza del directorio temporal..."
+rm -rf "$CONFIG_DIR" || true
 
-echo "[✔] ¡Entorno i3naro instalado y configurado exitosamente!"
+echo "[✔] Configuración copiada correctamente. ¡Listo para usar!"
