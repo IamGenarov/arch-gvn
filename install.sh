@@ -68,10 +68,8 @@ sudo pacman -S --noconfirm \
     ttf-nerd-fonts-symbols \
     ttf-nerd-fonts-symbols-mono \
     ttf-hack-nerd \
-    ttf-fira-code-nerd \
     ttf-jetbrains-mono-nerd \
     ttf-font-awesome \
-    ttf-material-design-icons
 
 # 7. Zsh y mejoras visuales
 echo "[+] Instalando Zsh..."
