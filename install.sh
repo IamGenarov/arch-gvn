@@ -64,16 +64,13 @@ sudo pacman -S --noconfirm xorg xorg-xinit || true
 echo "[+] Instalando Alacritty..."
 sudo pacman -S --noconfirm alacritty || true
 
-# 3. Gestor de sesión (opcional)
-read -p "[?] ¿Deseas instalar LightDM como login gráfico? (s/n): " usar_lightdm
-if [[ "$usar_lightdm" == "s" ]]; then
-    echo "[+] Instalando LightDM..."
-    sudo pacman -S --noconfirm lightdm lightdm-gtk-greeter || true
-    sudo systemctl enable lightdm || true
-else
-    echo "[+] Configurando inicio con startx..."
-    echo "exec i3" >> ~/.xinitrc || true
-fi
+# 3. Instalación de LightDM sin preguntar
+echo "[+] Instalando y habilitando LightDM..."
+sudo pacman -S --noconfirm lightdm lightdm-gtk-greeter || true
+sudo systemctl enable lightdm || true
+
+# Fallback en caso se use startx
+echo "exec i3" > ~/.xinitrc || true
 
 # 4. Reemplazo de i3-wm con i3-gaps
 echo "[+] Reemplazando i3-wm con i3-gaps..."
