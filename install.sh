@@ -1,33 +1,59 @@
 #!/bin/bash
 
-# No usar 'set -e' para permitir continuar en caso de errores
+# Definir colores ANSI
+RED="\033[1;31m"
+YELLOW="\033[1;33m"
+BLUE="\033[1;34m"
+GRAY="\033[1;90m"
+RESET="\033[0m"
 
-# Función para limpiar pantalla y mostrar el tren en una posición dada (espacios delante)
+# Humo animado (frames cíclicos)
+smoke_frames=(
+"   ${GRAY}(   )${RESET}"
+"   ${GRAY}(    )${RESET}"
+"   ${GRAY}(     )${RESET}"
+"   ${GRAY}(    )${RESET}"
+"   ${GRAY}(   )${RESET}"
+"   ${GRAY}.${RESET}"
+"    "
+)
+
+# Función para mostrar el tren con humo en una posición
 print_train() {
     clear
     local pos=$1
+    local frame=$2
     local space=$(printf "%${pos}s" "")
+
+    echo -e "${space}${smoke_frames[$frame]}"
     cat <<EOF
-${space}   ___     ____                                  
-${space}  |_ _|   |__ /   _ _     __ _      _ _    ___   
-${space}   | |     |_ \  | ' \   / _\` |    | '_|  / _ \  
-${space}  |___|   |___/  |_||_|  \__,_|   _|_|_   \___/  
-${space} _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
-${space} "\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-' 
+${space}  ${BLUE}   ___     ____${RESET}
+${space}  ${BLUE}  |_ _|   |__ /   _ _     __ _      _ _    ___${RESET}
+${space}  ${YELLOW}   | |     |_ \  | ' \   / _\` |    | '_|  / _ \ ${RESET}
+${space}  ${RED} |___|   |___/  |_||_|  \__,_|   _|_|_   \___/ ${RESET}
+${space} ${GRAY} _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|${RESET}
+${space} ${GRAY} "\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-' ${RESET}
 EOF
 }
 
-# Animación: mueve el tren 5 posiciones hacia la derecha y vuelve
-for i in {0..5}; do
-    print_train $i
-    sleep 0.3
+# Animación hacia la derecha
+for i in {0..20}; do
+    frame=$((i % ${#smoke_frames[@]}))
+    print_train "$i" "$frame"
+    sleep 0.1
 done
-for i in {5..0}; do
-    print_train $i
-    sleep 0.3
+
+# Y hacia la izquierda
+for ((i=20; i>=0; i--)); do
+    frame=$((i % ${#smoke_frames[@]}))
+    print_train "$i" "$frame"
+    sleep 0.1
 done
 
 clear
+echo -e "${GREEN}[✔] Animación finalizada. Iniciando el script...${RESET}"
+
+
 echo "[+] Iniciando instalación de dependencias..."
 
 # 1. Xorg y xinit
@@ -95,8 +121,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 
 # 11. Utilidades adicionales
 echo "[+] Instalando utilidades: rofi, neofetch, nvim, flameshot..."
-sudo pacman -S --noconfirm rofi feh nano
-
+sudo pacman -S --noconfirm rofi 
+sudo pacman -S --noconfirm feh 
+sudo pacman -S --noconfirm nano 
 echo "[✔] Todo listo. Dependencias y utilidades instaladas correctamente."
 
 # --- Clonación y copia de archivos ---
