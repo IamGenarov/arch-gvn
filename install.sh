@@ -97,7 +97,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 
 # 11. Utilidades adicionales
 echo "[+] Instalando utilidades: rofi, neofetch, nvim, flameshot..."
-sudo pacman -S --noconfirm rofi neofetch neovim flameshot
+sudo pacman -S --noconfirm rofi neovim flameshot
 
 echo "[✔] Todo listo. Dependencias y utilidades instaladas correctamente."
 
