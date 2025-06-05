@@ -76,7 +76,8 @@ chsh -s /bin/zsh || true
 # 8. Oh My Zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "[+] Instalando Oh My Zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
+    RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
+
 fi
 
 # 9. Powerlevel10k
@@ -94,7 +95,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 
 # 11. Utilidades adicionales
 echo "[+] Instalando utilidades: rofi, neofetch, nvim, flameshot..."
-sudo pacman -S --noconfirm rofi neovim flameshot feh || true
+sudo pacman -S --noconfirm rofi neovim feh flameshot  || true
 
 echo "[✔] Todo listo. Dependencias y utilidades instaladas correctamente."
 
