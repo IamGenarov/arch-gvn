@@ -1,20 +1,16 @@
-#!/bin/bash
 
-# Definir colores ANSI
-RED="\033[1;31m"
-YELLOW="\033[1;33m"
-BLUE="\033[1;34m"
-GRAY="\033[1;90m"
-RESET="\033[0m"
+
+
+#!/bin/bash
 
 # Humo animado (frames cíclicos)
 smoke_frames=(
-"   ${GRAY}(   )${RESET}"
-"   ${GRAY}(    )${RESET}"
-"   ${GRAY}(     )${RESET}"
-"   ${GRAY}(    )${RESET}"
-"   ${GRAY}(   )${RESET}"
-"   ${GRAY}.${RESET}"
+"   (   )"
+"   (    )"
+"   (     )"
+"   (    )"
+"   (   )"
+"   ."
 "    "
 )
 
@@ -25,14 +21,14 @@ print_train() {
     local frame=$2
     local space=$(printf "%${pos}s" "")
 
-    echo -e "${space}${smoke_frames[$frame]}"
+    echo "${space}${smoke_frames[$frame]}"
     cat <<EOF
-${space}  ${BLUE}   ___     ____${RESET}
-${space}  ${BLUE}  |_ _|   |__ /   _ _     __ _      _ _    ___${RESET}
-${space}  ${YELLOW}   | |     |_ \  | ' \   / _\` |    | '_|  / _ \ ${RESET}
-${space}  ${RED} |___|   |___/  |_||_|  \__,_|   _|_|_   \___/ ${RESET}
-${space} ${GRAY} _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|${RESET}
-${space} ${GRAY} "\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-' ${RESET}
+${space}   ___     ____
+${space}  |_ _|   |__ /   _ _     __ _      _ _    ___
+${space}   | |     |_ \  | ' \   / _\` |    | '_|  / _ \ 
+${space}  |___|   |___/  |_||_|  \__,_|   _|_|_   \___/
+${space} _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
+${space} "\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-'"\`-0-0-' 
 EOF
 }
 
