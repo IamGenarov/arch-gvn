@@ -12,6 +12,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id ~/.cambiar_fondo.sh
 
 # ─── Volumen ───────────────────────────────────
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -25,7 +26,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # ─── Terminal ──────────────────────────────────
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec --no-startup-id alacritty --working-directory ~
 
 # ─── Kill ventana ──────────────────────────────
 bindsym $mod+Shift+q kill

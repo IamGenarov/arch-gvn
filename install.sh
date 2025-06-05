@@ -133,4 +133,23 @@ cp -r "$CONFIG_DIR/fonts/"* "$HOME/.local/share/fonts/" 2>/dev/null || true
 echo "[+] Limpieza del directorio temporal..."
 rm -rf "$CONFIG_DIR" || true
 
+
+# Dar permisos de ejecución a scripts importantes
+echo "[+] Dando permisos de ejecución a launch.sh y cambiar_pantalla.sh..."
+chmod +x "$HOME/.config/polybar/launch.sh" 2>/dev/null || true
+chmod +x "$HOME/.cambiar_fondo.sh" 2>/dev/null || true
+
+# Recargar configuración de zsh si está instalada
+if [ -f "$HOME/.zshrc" ]; then
+    echo "[+] Ejecutando source ~/.zshrc..."
+    source "$HOME/.zshrc" || true
+fi
+
+# Si existe configuración de Powerlevel10k
+if [ -f "$HOME/.p10k.zsh" ]; then
+    echo "[+] Ejecutando source ~/.p10k.zsh..."
+    source "$HOME/.p10k.zsh" || true
+fi
+
+
 echo "[✔] Configuración copiada correctamente. ¡Listo para usar!"
