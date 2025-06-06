@@ -13,7 +13,7 @@
 
 **i3naro** es un entorno de usuario minimalista y altamente personalizado que transforma tu experiencia con [i3 Window Manager](https://i3wm.org/) desde el primer arranque. Está diseñado para entusiastas de Linux que buscan control, rendimiento y estética simple.
 
-![Captura de pantalla](./screenshot.png)
+![Captura de pantalla](i3naro.png)
 
 ---
 
