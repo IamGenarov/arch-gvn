@@ -120,6 +120,10 @@ echo "[+] Instalando utilidades: rofi, feh, nano..."
 sudo pacman -S --noconfirm rofi feh nano || true
 sudo pacman -S --noconfirm flameshot || true
 sudo pacman -S --noconfirm xclip || true
+sudo pacman -S --noconfirm networkmanager || true
+sudo systemctl enable NetworkManager.service || true
+sudo systemctl start NetworkManager.service || true
+
 echo "[✔] Todo listo. Dependencias y utilidades instaladas correctamente."
 
 # -------------------------
