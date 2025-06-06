@@ -118,8 +118,8 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 # 11. Utilidades adicionales
 echo "[+] Instalando utilidades: rofi, feh, nano..."
 sudo pacman -S --noconfirm rofi feh nano || true
-sudo pacman -S --noconfirm picom flameshot || true
-
+sudo pacman -S --noconfirm flameshot || true
+sudo pacman -S --noconfirm xclip || true
 echo "[✔] Todo listo. Dependencias y utilidades instaladas correctamente."
 
 # -------------------------
@@ -146,7 +146,10 @@ cp "$CONFIG_DIR/i3/config" "$HOME/.config/i3/config" || true
 
 # Crear carpetas estándar
 echo "[+] Creando carpetas estándar..."
-mkdir -p "$HOME/Documents" "$HOME/Pictures/.wallpapers" "$HOME/Downloads" "$HOME/Music" "$HOME/Videos" || true
+mkdir -p "$HOME/Documents" "$HOME/Pictures/.wallpapers" "$HOME/Downloads" "$HOME/Music" "$HOME/Videos" "$HOME/Pictures/Clipboard"|| true
+
+
+
 
 echo "[+] Copiando wallpapers a ~/Pictures/.wallpapers ..."
 cp -r "$CONFIG_DIR/wallpapers/"* "$HOME/Pictures/.wallpapers/" 2>/dev/null || true

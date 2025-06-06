@@ -141,5 +141,9 @@ client.urgent           #ff0000 #ff0000 #ffffff #ff0000
 
 # ─── Sin barra de título ───────────────────────
 for_window [class=".*"] border pixel 2
-# ─── Picom ───────────────────────
-#exec --no-startup-id picom --config ~/.config/picom/picom.conf
+# ─── Flameshot ───────────────────────
+# Captura pantalla completa y guarda automáticamente en Pictures/Clipboard
+bindsym Control+s exec --no-startup-id flameshot full -p ~/Pictures/Clipboard
+
+# Captura área recortada interactiva
+bindsym Control+Shift+s exec --no-startup-id flameshot gui
