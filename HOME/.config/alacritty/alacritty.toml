@@ -7,12 +7,19 @@ background = "0x000000"  # Fondo negro
 foreground = "0xe0e0e0"  # Texto gris claro
 
 [font]
-size = 23.0
+size = 13.0
 
 [font.normal]
-family = "xos4 Terminus"
+family = "JetBrainsMono Nerd Font"
 style = "Regular"
 
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
 [terminal.shell]
 program = "/bin/zsh"
 
