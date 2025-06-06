@@ -2,7 +2,7 @@
 # i3naro - Entorno gráfico rápido y minimalista con i3
 
 <p align="center">
-  <img src="i3naro.png" alt="Logo i3naro" width="200"/>
+  <img src="logo.png" alt="Logo i3naro" width="200"/>
 </p>
 
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
