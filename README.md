@@ -45,22 +45,14 @@
 ```bash
 git clone https://github.com/g3nkzn/i3naro.git
 cd i3naro
-Da permisos al script de instalación:
-
-bash
-Copiar
-Editar
 chmod +x install.sh
-Ejecuta el instalador:
-
-bash
-Copiar
-Editar
 ./install.sh
-Elige entre startx o lightdm según tu preferencia.
-
-📸 Capturas
-Próximamente...
+```
+2. Iniciar i3/config (Entra a alacritty[WIN+RETURN])
+```bash
+cp ~/i3naro/.config/i3/config ~/.config/i3/config
+```
+2. WIN + SHIFT + R
 
 📄 Licencia
 Este proyecto está bajo la licencia MIT.
