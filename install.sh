@@ -158,17 +158,13 @@ mkdir -p "$HOME/Documents" "$HOME/Pictures/.wallpapers" "$HOME/Downloads" "$HOME
 echo "[+] Copiando wallpapers a ~/Pictures/.wallpapers ..."
 cp -r "$CONFIG_DIR/wallpapers/"* "$HOME/Pictures/.wallpapers/" 2>/dev/null || true
 
-echo "[+] Copiando fuentes locales..."
-mkdir -p "$HOME/.local/share/fonts" || true
-cp -r "$CONFIG_DIR/fonts/"* "$HOME/.local/share/fonts/" 2>/dev/null || true
-
 echo "[+] Limpieza del directorio temporal..."
 rm -rf "$CONFIG_DIR" || true
 
 # Dar permisos de ejecución a scripts 
 echo "[+] Dando permisos de ejecución a launch.sh y cambiar_pantalla.sh..."
 chmod +x "$HOME/.config/polybar/launch.sh" 2>/dev/null || true
-chmod +x "$HOME/.cambiar_fondo.sh" 2>/dev/null || true
+chmod +x "$HOME/.config/polybar/scripts/ip-detect.sh" 2>/dev/null || true
 
 # Recargar configuración de zsh si está instalada
 if [ -f "$HOME/.zshrc" ]; then

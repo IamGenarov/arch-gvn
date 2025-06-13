@@ -130,7 +130,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # ─── Gaps ───────────────────────────────────────
-gaps inner 5
+gaps inner 10
 gaps outer 5
 
 # ─── Bordes ─────────────────────────────────────

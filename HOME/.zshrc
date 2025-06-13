@@ -38,6 +38,11 @@ ZSH_HIGHLIGHT_STYLES[precommand]='fg=199'
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=196'
 
 # -----------------------
+# Desactivando el beep
+# -----------------------
+# setterm -blength 0
+
+# -----------------------
 # Funciones Personalizadas
 # -----------------------
 

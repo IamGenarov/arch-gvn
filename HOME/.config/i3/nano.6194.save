@@ -1,0 +1,13 @@
+🟦 Black Box (Caja Negra):
+
+    Se enfoca en qué hace el componente, no cómo lo hace.
+
+    
+🟩 White Box (Caja Blanca):
+
+    Se muestra la estructura interna del componente.
+
+    
+¿Cómo afecta la elección entre white box y black box al mantenimiento y evolución del sistema a lo largo del tiempo?
+¿Cómo manejan en los diagramas de componentes la evolución de un sistema
+ cuando los componentes cambian o se actualizan frecuentemente?
