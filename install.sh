@@ -163,8 +163,8 @@ rm -rf "$CONFIG_DIR" || true
 
 
 echo "[+] Copiando fuentes locales..."
-mkdir -p "$HOME/.local/share/fonts" || true
-cp -r "$CONFIG_DIR/fonts/"* "$HOME/.local/share/fonts/" >
+mkdir -p "$HOME/.local/share/" || true
+cp -r "$CONFIG_DIR/fonts" "$HOME/.local/share/" >
 
 # Dar permisos de ejecución a scripts 
 echo "[+] Dando permisos de ejecución a launch.sh y cambiar_pantalla.sh..."
