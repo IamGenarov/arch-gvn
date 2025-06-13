@@ -161,6 +161,11 @@ cp -r "$CONFIG_DIR/wallpapers/"* "$HOME/Pictures/.wallpapers/" 2>/dev/null || tr
 echo "[+] Limpieza del directorio temporal..."
 rm -rf "$CONFIG_DIR" || true
 
+
+echo "[+] Copiando fuentes locales..."
+mkdir -p "$HOME/.local/share/fonts" || true
+cp -r "$CONFIG_DIR/fonts/"* "$HOME/.local/share/fonts/" >
+
 # Dar permisos de ejecución a scripts 
 echo "[+] Dando permisos de ejecución a launch.sh y cambiar_pantalla.sh..."
 chmod +x "$HOME/.config/polybar/launch.sh" 2>/dev/null || true
