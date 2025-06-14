@@ -81,7 +81,6 @@ sudo apt install -y i3-wm i3-gaps
 
 # 5. Polybar
 echo "[+] Instalando Polybar..."
-sudo apt install -y polybar
 
 # 6. Fuentes necesarias
 echo "[+] Instalando fuentes..."
