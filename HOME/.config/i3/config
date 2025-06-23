@@ -12,6 +12,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec_always --no-startup-id ~/.config/polybar/launch.sh
+#exec --no-startup-id bash ~/.config/polybar/launch.sh
 
 exec_always --no-startup-id sh -c "sleep 2 && picom --config ~/.config/picom/picom.conf --backend glx"
 
@@ -130,7 +131,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # ─── Gaps ───────────────────────────────────────
-gaps inner 10
+gaps inner 5
 gaps outer 5
 
 # ─── Bordes ─────────────────────────────────────
@@ -143,7 +144,7 @@ client.focused_inactive #222222 #222222 #ffffff #222222
 client.urgent           #ff0000 #ff0000 #ffffff #ff0000
 
 # ─── Sin barra de título ───────────────────────
-for_window [class=".*"] border pixel 2
+for_window [class=".*"] border pixel 0
 # ─── Flameshot ───────────────────────
 # Captura pantalla completa y guarda automáticamente en Pictures/Clipboard
 bindsym Control+s exec --no-startup-id flameshot full -p ~/Pictures/Clipboard
