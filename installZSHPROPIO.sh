@@ -96,6 +96,11 @@ echo "[+] Instalando Zsh..."
 sudo pacman -S --noconfirm zsh || true
 chsh -s /bin/zsh || true
 
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    echo "[+] Instalando Oh My Zsh..."
+    RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
+fi
+
 # 10. Plugins Zsh
 echo "[+] Instalando plugins Zsh..."
 git clone https://github.com/zsh-users/zsh-autosuggestions \
