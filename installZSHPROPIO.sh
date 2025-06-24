@@ -96,17 +96,6 @@ echo "[+] Instalando Zsh..."
 sudo pacman -S --noconfirm zsh || true
 chsh -s /bin/zsh || true
 
-# 8. Oh My Zsh
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    echo "[+] Instalando Oh My Zsh..."
-    RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
-fi
-
-# 9. Powerlevel10k
-echo "[+] Instalando Powerlevel10k..."
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
-    ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k || true
-
 # 10. Plugins Zsh
 echo "[+] Instalando plugins Zsh..."
 git clone https://github.com/zsh-users/zsh-autosuggestions \
