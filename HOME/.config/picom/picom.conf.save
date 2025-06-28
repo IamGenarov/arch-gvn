@@ -1,43 +1,74 @@
-# picom.conf con desenfoque para Rofi
+##################################
+#          picom.conf           #
+#  Versión segura para VM       #
+##################################
 
-backend = "glx";
+# Usa backend compatible (Xrender en vez de GLX)
+backend = "xrender";
+vsync = true;
 
-# Reglas de opacidad (aplica solo a Rofi)
+##################################
+#         TRANSPARENCIA         #
+##################################
+
+inactive-opacity = 0.80;
+active-opacity = 0.80;
 opacity-rule = [
   "90:class_g = 'Rofi'"
 ];
 
-# Activar blur (desenfoque)
-blur:
-{
-  method = "dual_kawase";
-  strength = 5;  # Puedes subir a 15 o 20 si lo quieres más borroso
-  background = false;
-  background-frame = false;
-  background-fixed = false;
-};
+##################################
+#     BLUR (DESACTIVADO)        #
+##################################
 
-# Habilitar desenfoque para ventanas transparentes
-blur-background = true;
-blur-background-exclude = [
-  "window_type = 'dock'",
-  "window_type = 'desktop'",
-  "class_g = 'Conky'",
-  "class_g = 'i3-frame'",
-  "class_g = 'Polybar'",
-  "class_g = 'Bar'",
-  "class_g = 'rofi' && !focused"  # Evita que borroso se aplique si no está enfocado
-];
+# Desactivado porque requiere GLX y OpenGL
+# Puedes probar activarlo si tienes soporte
 
-# Sombra deshabilitada
+# blur = {
+#   method = "dual_kawase";
+#   strength = 8;
+#   background = true;
+#   background-frame = true;
+#   background-fixed = false;
+# };
+
+# blur-background-exclude = [
+#   "window_type = 'dock'",
+#   "window_type = 'desktop'",
+#   "class_g = 'Conky'",
+#   "class_g = 'i3-frame'",
+#   "class_g = 'Bar'",
+#   "class_g = 'rofi'"
+# ];
+
+##################################
+#     BORDES REDONDEADOS        #
+##################################
+
+# No compatibles con xrender, se desactivan
+corner-radius = 0;
+
+# round-borders-rule = [
+#   "window_type = 'normal' && class_g != 'Polybar' && class_g != 'polybar'"
+# ];
+
+##################################
+#           SOMBRAS             #
+##################################
+
 shadow = false;
 
-# Deshabilitar fading
+##################################
+#         FADING EFECTOS        #
+##################################
+
 fading = false;
 
-# Mejor compatibilidad y rendimiento
+##################################
+#         COMPATIBILIDAD        #
+##################################
+
 detect-client-opacity = true;
-glx-no-stencil = true;
-glx-no-rebind-pixmap = true;
 detect-transient = true;
 detect-client-leader = true;
+use-damage = true;
