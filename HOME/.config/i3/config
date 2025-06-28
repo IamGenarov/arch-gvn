@@ -15,6 +15,7 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 #exec --no-startup-id bash ~/.config/polybar/launch.sh
 
 exec_always --no-startup-id sh -c "sleep 2 && picom --config ~/.config/picom/picom.conf --backend glx"
+#exec --no-startup-id sh -c "sleep 2 && picom --backend xrender --config ~/.config/picom.conf"
 
 exec --no-startup-id feh --bg-scale ~/Pictures/.wallpapers/fp3.png
 
