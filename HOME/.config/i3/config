@@ -156,4 +156,5 @@ bindsym Control+Shift+s exec --no-startup-id flameshot gui
 
 #Descactivar el beep
 exec --no-startup-id xset -b
-
+#Colocar pantalla completa vmware
+#exec --no-startup-id xrandr --output Virtual1 --mode 1920x1080
