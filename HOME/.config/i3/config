@@ -14,8 +14,9 @@ exec --no-startup-id nm-applet
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 #exec --no-startup-id bash ~/.config/polybar/launch.sh
 
-exec_always --no-startup-id sh -c "sleep 2 && picom --config ~/.config/picom/picom.conf --backend glx"
-#exec_always --no-startup-id sh -c "sleep 2 && picom --backend xrender --config ~/.config/picom/picom.conf"
+#si es maquina virtual usar xreder, si es dispositivo fisico glx
+#exec_always --no-startup-id sh -c "sleep 2 && picom --config ~/.config/picom/picom.conf --backend glx"
+exec_always --no-startup-id sh -c "sleep 2 && picom --backend xrender --config ~/.config/picom/picom.conf"
 
 exec --no-startup-id feh --bg-scale ~/Pictures/.wallpapers/fp3.png
 
@@ -156,5 +157,6 @@ bindsym Control+Shift+s exec --no-startup-id flameshot gui
 
 #Descactivar el beep
 exec --no-startup-id xset -b
-#Colocar pantalla completa vmware
-#exec --no-startup-id xrandr --output Virtual1 --mode 1920x1080
+
+#Colocar pantalla completa vmware, solo necesario si es VM
+#exec --no-startup-id xrandr --output Virtual-1 --mode 1920x1080

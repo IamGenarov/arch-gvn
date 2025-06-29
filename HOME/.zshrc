@@ -1,3 +1,5 @@
+export ZSH_DISABLE_COMPFIX=true
+
 # -------------------------------------------
 # Powerlevel10k instant prompt (al principio)
 # -------------------------------------------
@@ -66,7 +68,7 @@ function short_path {
 # Prompt personalizado
 # ----------------------------
 #PS1='%F{208}%f  %F{201}%n%f  $(dir_icon) %F{45}$(short_path)%f%F{129}${vcs_info_msg_0_}%f %F{243}┃%f '
-PS1='%F{45}%f  %F{201}%n%f  $(dir_icon) %F{45}$(short_path)%f%F{129}${vcs_info_msg_0_}%f  %F{213}❯%f '
+PS1='%F{45}🎭%f  %F{201}%n%f  $(dir_icon) %F{45}$(short_path)%f%F{129}${vcs_info_msg_0_}%f  %F{213}❯%f '
 
 #PS1='%F{208}%f %F{201}%n%f %F{244}at%f $(dir_icon) %F{45}$(short_path)%f %F{129}${vcs_info_msg_0_}%f %F{213}➤%f '
 
