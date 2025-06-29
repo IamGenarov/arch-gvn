@@ -162,10 +162,6 @@ echo "[+] Limpieza del directorio temporal..."
 rm -rf "$CONFIG_DIR" || true
 
 
-echo "[+] Copiando fuentes locales..."
-mkdir -p "$HOME/.local/share/" || true
-cp -r "$CONFIG_DIR/fonts" "$HOME/.local/share/" >
-
 # Dar permisos de ejecución a scripts 
 echo "[+] Dando permisos de ejecución a launch.sh y cambiar_pantalla.sh..."
 chmod +x "$HOME/.config/polybar/launch.sh" 2>/dev/null || true
@@ -177,10 +173,5 @@ if [ -f "$HOME/.zshrc" ]; then
     source "$HOME/.zshrc" || true
 fi
 
-# Si existe configuración de Powerlevel10k
-if [ -f "$HOME/.p10k.zsh" ]; then
-    echo "[+] Ejecutando source ~/.p10k.zsh..."
-    source "$HOME/.p10k.zsh" || true
-fi
 
 echo -e "${GREEN}[✔] Configuración copiada correctamente. ¡Listo para usar!${RESET}"
