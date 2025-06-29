@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ETH_IFACE="ens33"
+ETH_IFACE="enp1s0"
 WIFI_IFACE="wlan0"
 
 # Extraer IP con máscara CIDR (ejemplo: 192.168.0.15/24)
